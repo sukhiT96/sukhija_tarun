@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark"> <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tarun Sukhija</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* Theme Variables (Focus Visibility v5 - Overlay Focus) */
+    :root { /* Light Mode Colors */ --color-text-lm: hsl(0deg 0% 5%); --color-background-lm: hsl(0deg 0% 100%); --color-primary-lm: hsl(245deg 100% 60%); --color-secondary-lm: hsl(50deg 100% 50%); --color-gray-100-lm: hsl(0deg 0% 95%); --color-gray-300-lm: hsl(0deg 0% 80%); --color-gray-500-lm: hsl(0deg 0% 50%); --color-success-lm: hsl(145deg 100% 35%); --color-backdrop-lm: hsla(0deg 0% 100% / 0.85); --color-overlay-bg-lm: hsla(0, 0%, 0%, 0.65); --color-shadow-lm: hsla(0, 0%, 0%, 0.15); /* Dark Mode Colors */ --color-text-dm: hsl(0deg 0% 95%); --color-background-dm: hsl(220deg 20% 10%); --color-primary-dm: hsl(245deg 100% 70%); --color-secondary-dm: hsl(50deg 100% 60%); --color-gray-100-dm: hsl(220deg 15% 18%); --color-gray-300-dm: hsl(220deg 15% 30%); --color-gray-500-dm: hsl(220deg 10% 50%); --color-success-dm: hsl(145deg 100% 45%); --color-backdrop-dm: hsla(220deg 20% 10% / 0.85); --color-overlay-bg-dm: hsla(0, 0%, 0%, 0.75); --color-shadow-dm: hsla(0, 0%, 0%, 0.4); /* Theme Agnostic Variables */ --font-weight-bold: 700; --font-family: 'Inter', sans-serif; --transition: 0.3s ease-out; --focus-scale: 1.0; --header-height: 60px; }
+    /* Apply Light Mode by default */
+    :root { --bg: var(--color-background-lm); --fg: var(--color-text-lm); --accent: var(--color-primary-lm); --muted: var(--color-gray-500-lm); --border-color: var(--color-gray-300-lm); --backdrop: var(--color-backdrop-lm); --item-bg: var(--color-gray-100-lm); --shadow-color: var(--color-shadow-lm); --success: var(--color-success-lm); --secondary: var(--color-secondary-lm); --overlay-bg: var(--color-overlay-bg-lm); }
+    /* Apply Dark Mode Styles */
+    [data-theme="dark"] { --bg: var(--color-background-dm); --fg: var(--color-text-dm); --accent: var(--color-primary-dm); --muted: var(--color-gray-500-dm); --border-color: var(--color-gray-300-dm); --backdrop: var(--color-backdrop-dm); --item-bg: var(--color-gray-100-dm); --shadow-color: var(--color-shadow-dm); --success: var(--color-success-dm); --secondary: var(--color-secondary-dm); --overlay-bg: var(--color-overlay-bg-dm); }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-height) + 20px); }
+    body { margin: 0; font-family: var(--font-family); background: var(--bg); color: var(--fg); line-height: 1.6; transition: background var(--transition), color var(--transition); }
+
+    /* Links */
+    a { color: var(--accent); text-decoration: none; position: relative; transition: color var(--transition); }
+    a::after { content: ''; position: absolute; left: 0; bottom: -2px; width: 100%; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform var(--transition); }
+    a:hover { color: var(--secondary); } a:hover::after { transform: scaleX(1); background: var(--secondary); }
+    a.icon-link { display: inline-flex; align-items: center; } a.icon-link::after { display: none; } a.icon-link svg { transition: transform var(--transition); } a.icon-link:hover svg { transform: scale(1.2); }
+    a.logo-link, a.logo-link:hover { color: var(--fg); text-decoration: none; } a.logo-link::after { display: none; }
+
+    /* Header */
+    header { position: sticky; top: 0; width: 100%; height: var(--header-height); background: var(--backdrop); backdrop-filter: saturate(180%) blur(15px); border-bottom: 1px solid var(--border-color); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: nowrap; z-index: 1000; transition: background var(--transition), border-color var(--transition); }
+    .logo-container { flex-shrink: 0; } .logo { font-weight: var(--font-weight-bold); font-size: 1.25rem; display: inline-block; }
+    nav { display: flex; flex-wrap: nowrap; overflow-x: auto; }
+    nav a { margin: 0 1rem; font-weight: 500; padding: 0.25rem 0; color: var(--muted); transition: color var(--transition), border-color var(--transition); border-bottom: 2px solid transparent; white-space: nowrap; line-height: calc(var(--header-height) - 1rem); }
+    nav a.active, nav a:hover { color: var(--accent); border-bottom-color: var(--accent); } nav a:hover::after { display: none; }
+    #theme-toggle { background: none; border: none; cursor: pointer; font-size: 1.5rem; margin-left: 1rem; color: var(--muted); transition: color var(--transition), transform var(--transition); }
+    #theme-toggle:hover { color: var(--accent); transform: rotate(15deg); }
+
+    /* Main container */
+    main { max-width: 800px; margin: 2rem auto; padding: 0 1rem; position: relative; }
+
+    /* Section Styling & Focus Effect */
+    .section { margin-bottom: 4rem; padding: 1.5rem; border-radius: 8px; transition: opacity 0.4s ease-out, transform 0.4s ease-out, box-shadow 0.4s ease-out, background 0.4s ease-out; opacity: 0; transform: translateY(20px); background: var(--bg); scroll-margin-top: calc(var(--header-height) + 20px); position: relative; z-index: 1; }
+    .section.visible { opacity: 1; transform: translateY(0); }
+
+    /* Focus styles */
+     body.has-focus main > .section { pointer-events: none; }
+    body.has-focus main > .section.focused { opacity: 1; transform: scale(var(--focus-scale)); box-shadow: 0 20px 40px -10px var(--shadow-color); z-index: 10; position: relative; pointer-events: auto; max-height: calc(100vh - var(--header-height) - 4rem); overflow-y: auto; background: var(--bg); }
+     body.has-focus main > #experience.focused .experience-item { pointer-events: auto; transition: transform var(--transition), box-shadow var(--transition), background var(--transition); }
+     body.has-focus main > #experience.focused .experience-item.item-focused { opacity: 1; transform: scale(1.01); box-shadow: 0 8px 25px var(--shadow-color); pointer-events: auto; background: var(--item-bg); position: relative; z-index: 11; }
+
+    .section-title { font-size: 1.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1.5rem; position: relative; color: var(--fg); font-weight: var(--font-weight-bold); }
+    .section-title::after { content: ''; display: block; width: 3.5rem; height: 4px; background: var(--accent); margin-top: 0.75rem; transition: background var(--transition); }
+
+    /* Experience Items */
+    .experience-item { margin-bottom: 2rem; padding: 1.5rem; border-left: 4px solid var(--accent); border-radius: 4px; background: var(--item-bg); transition: opacity var(--transition), transform var(--transition), box-shadow var(--transition), background var(--transition); cursor: pointer; position: relative; }
+     .experience-item:hover { box-shadow: 0 4px 10px var(--shadow-color); transform: translateY(-2px); }
+    .experience-item h3 { display: inline; margin-right: 0.5rem; font-size: 1.2rem; color: var(--fg); }
+     .experience-item h3 a.icon-link { vertical-align: middle; margin-left: 0.25rem; }
+     .experience-item h3 a.icon-link svg { width: 1em; height: 1em; }
+    .experience-item h4 { margin-top: 1.5rem; margin-bottom: 0.75rem; color: var(--fg); font-weight: var(--font-weight-bold); }
+    .experience-details { margin-top: 0.5rem; } .experience-details h5 { font-weight: var(--font-weight-bold); margin-top: 1rem; margin-bottom: 0.25rem; color: var(--muted); }
+
+    /* Universal Bullet Point Style */
+    .section ul { margin: 0.5rem 0 0.5rem 0; padding-left: 0; list-style: none; }
+    .section ul li { position: relative; padding-left: 1.75rem; margin-bottom: 0.6rem; font-size: 0.95rem; }
+    .section ul li::before { content: ''; position: absolute; left: 0; top: 0.4em; width: 0.75em; height: 0.75em; background: linear-gradient(135deg, var(--accent), var(--secondary)); border-radius: 50%; transition: background var(--transition); }
+    .section ul ul { margin-top: 0.5rem; margin-left: 1.75rem; }
+    .experience-item h4 + ul { margin-top: 0; } .experience-item h4 + ul li::marker { display: none; }
+
+    /* Meta Info Alignment */
+    .meta { font-size: 0.9rem; color: var(--muted); margin-top: 0.5rem; margin-bottom: 1rem; }
+    .meta-location { display: flex; align-items: center; margin-bottom: 0.75rem; }
+    .meta-grid { display: grid; grid-template-columns: auto 1fr; gap: 0.5rem 1rem; align-items: center; }
+    .meta-role, .meta-date { display: flex; align-items: center; white-space: nowrap; }
+    .meta svg { width: 1.1em; height: 1.1em; flex-shrink: 0; fill: currentColor; vertical-align: middle; margin-right: 0.35rem; }
+
+    /* Contact List */
+    .contact-list { list-style: none; padding: 0; margin: 1rem 0; }
+    .contact-list li { display: flex; align-items: center; margin-bottom: 0.75rem; font-size: 1rem; }
+    .contact-list svg { width: 1.2em; height: 1.2em; flex-shrink: 0; fill: currentColor; margin-right: 0.75rem; }
+    .contact-list a:hover::after { transform: scaleX(0); }
+
+    /* Education Section */
+    #education p { margin-bottom: 0.5rem;} #education .meta { margin-top: 0.5rem;} #education .meta-location { margin-bottom: 0.25rem;}
+    #education .university-link { margin-left: 0.25rem; vertical-align: middle; }
+    .university-link svg, a.icon-link svg { width: 1em; height: 1em; fill: currentColor; vertical-align: middle; }
+
+    /* Overlay */
+    #focus-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--overlay-bg); opacity: 0; visibility: hidden; z-index: 5; transition: opacity var(--transition), visibility var(--transition); cursor: pointer; }
+    body.has-focus #focus-overlay { opacity: 1; visibility: visible; }
+
+    /* Responsive */
+    @media (max-width: 768px) { header { padding: 0 1rem; } nav a { margin: 0 0.5rem; } main { margin: 1.5rem auto; padding: 0 0.75rem; } .section-title { font-size: 1.6rem; } .experience-item h3 { font-size: 1.1rem; } .meta { font-size: 0.85rem; } body.has-focus main > .section.focused { max-height: calc(100vh - var(--header-height) - 2rem); } }
+     @media (max-width: 600px) { header { height: auto; flex-direction: column; align-items: flex-start; padding: 0.5rem 1rem; } nav { width: 100%; order: 3; margin-top: 0.5rem; justify-content: space-around; } nav a { margin: 0 0.25rem; line-height: 2.5rem; } .logo-container { margin-bottom: 0.5rem; } #theme-toggle { position: absolute; top: 0.75rem; right: 1rem; } html { scroll-padding-top: 20px; } .section { scroll-margin-top: 20px; } .meta-grid { grid-template-columns: 1fr; } }
+
+  </style>
+</head>
+<body>
+  <div id="focus-overlay"></div>
+  <header>
+    <div class="logo-container">
+        <a href="#" id="logo-link" class="logo-link">
+            <span class="logo">Tarun Sukhija</span>
+        </a>
+    </div>
+    <nav id="main-nav">
+      <a href="#about" class="nav-link">About</a>
+      <a href="#experience" class="nav-link">Experience</a>
+      <a href="#education" class="nav-link">Education</a>
+      <a href="#skills" class="nav-link">Skillset</a>
+      <a href="#interests" class="nav-link">Interests</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </nav>
+    <button id="theme-toggle" aria-label="Activate light mode">🌙</button>
+  </header>
+
+  <main>
+    <section id="about" class="section"> <p>Hi, I am a curious generalist. I enjoy thinking about problem statements and their solutions. I am also able to execute some of them.</p> </section>
+
+    <section id="experience" class="section">
+      <h2 class="section-title">Work Experience</h2>
+      <div class="experience-item" data-item-id="ta-consulting">
+         <h3>T&A Consulting <a href="https://www.taglobalgroup.com/" target="_blank" aria-label="T&A Consulting Website" class="icon-link"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"> <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/> <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/> </svg> </a></h3>
+         <div class="meta">
+            <div class="meta-location"> <svg xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" viewBox="0 0 16 16"><path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg> <span>Gurugram</span> </div>
+            <div class="meta-grid">
+                 <div class="meta-role"> <svg xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" viewBox="0 0 16 16"><path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0zM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5z"/></svg> <span>Lead Engagement Manager</span> </div>
+                 <div class="meta-date"> <svg xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" viewBox="0 0 16 16"><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/></svg> <span>Feb – Nov 2023 &amp; Apr – Sep 2022</span> </div>
+                 <div class="meta-role"> <svg xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" viewBox="0 0 16 16"><path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0zM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5z"/></svg> <span>Engagement Manager</span> </div>
+                 <div class="meta-date"> <svg xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" viewBox="0 0 16 16"><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/></svg> <span>Apr 2021 – Sep 2022</span> </div>
+            </div>
+         </div>
+         <div class="experience-details"><h4>Responsibilities</h4><h5>Projects Led</h5><ul><li><strong>Mapping fintech opportunities in Nepal mapping for European companies</strong><ul><li>Led a 3-member team to undertake primary and secondary research on the emerging Nepalese fintech ecosystem</li><li>Market sizing, gap analysis</li><li>1-on-1 interviews with CXOs from Nepalese fintechs (payments and insurance), banks, and non-profits</li></ul></li><li><strong>Regulatory and market feasibility for Japanese regenerative therapies and related medical devices in India</strong></li><li><strong>Scouting Indian outward direct investment for a European agency</strong><ul><li>Led a 5-member team that implemented outreach campaigns to prospect Indian companies expanding internationally</li><li>Analysis of trends in outward investments from India and identification of sectors and beneficiaries companies</li><li>Tracked and engaged with Indian deep-tech startups and CXOs</li></ul></li></ul><h5>Projects Contributed To</h5><ul><li><strong>Indian private markets scanner for an OECD-based Sovereign Wealth Fund (SWF) scoping investment opportunities</strong><ul><li>Tracked regulations and mapped opportunities in Infrastructure Investment Trusts (InvITs), private credit, and VC/PE</li><li>Analysed Investment routes and partnership strategies adopted by Sovereign Wealth Funds (SWFs) for entering and scaling in India</li><li>Entry strategy recommended</li></ul></li></ul><h4>Impact</h4><ul><li>Planned and implemented five roadshows in India, connecting investment promotion delegates from Europe and the US to Indian companies exploring international markets<ul><li>Contributed to six companies’ expansion to Europe</li></ul></li><li>Implemented no-code workflows for campaign management – resulting in 30% increase in net promoter score by clients</li></ul></div>
+      </div>
+      <div class="experience-item" data-item-id="pb-fintech">
+         <h3>PB Fintech <a href="https://www.pbfintech.in/" target="_blank" aria-label="PB Fintech Website" class="icon-link"> <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"> <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/> <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/> </svg> </a></h3>
+         <div class="meta"> <div class="meta-location"> <svg xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" viewBox="0 0 16 16"><path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg> <span>Gurugram</span> </div><div class="meta-grid"> <div class="meta-role"> <svg xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" viewBox="0 0 16 16"><path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0zM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5z"/></svg> <span>Assistant Manager Analytics</span> </div><div class="meta-date"> <svg xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" viewBox="0 0 16 16"><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/></svg> <span>Sep 2022 – Jan 2023</span> </div></div> </div>
+         <div class="experience-details"> <h4>Responsibilities</h4> <ul> <li>Cap table analysis</li> <li>Tracking global investments within InsurTech</li> <li>Investor communication</li> <li>Earnings updates</li> </ul> </div>
+      </div>
+      <div class="experience-item" data-item-id="aranca">
+         <h3>Aranca <a href="https://www.aranca.com/" target="_blank" aria-label="Aranca Website" class="icon-link"> <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"> <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/> <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/> </svg> </a></h3>
+         <div class="meta"> <div class="meta-location"> <svg xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" viewBox="0 0 16 16"><path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg> <span>Mumbai</span> </div><div class="meta-grid"> <div class="meta-role"> <svg xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" viewBox="0 0 16 16"><path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0zM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5z"/></svg> <span>Research Analyst</span> </div><div class="meta-date"> <svg xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" viewBox="0 0 16 16"><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/></svg> <span>Apr 2018 – Sep 2020</span> </div><div class="meta-role"> <svg xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" viewBox="0 0 16 16"><path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0zM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5z"/></svg> <span>Junior Research Analyst</span> </div><div class="meta-date"> <svg xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" viewBox="0 0 16 16"><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/></svg> <span>Jun 2017 – Mar 2018</span> </div></div> </div>
+         <div class="experience-details"> <h4>Responsibilities</h4><h5>Projects Led</h5><ul><li><strong>Full-time equivalent (FTE) lead for US-based Special Purpose Acquisition Company (SPAC)</strong><ul><li>Market sizing for new legal cannabis states, based on illicit penetration and growth in mature legal states</li><li>Conducted due diligence for three deals worth USD 50–250 million</li><li>Financial modeling, DCF, relative valuations, and cap structure analysis</li></ul></li></ul><h5>Projects Contributed To</h5><ul><li><strong>Ad hoc projects within the investment banking team</strong><ul><li>Investment memorandums, pitch decks, &amp; deal teasers for FMCG and automation companies in the Middle East and North Africa (MENA) region</li><li>Transaction and company screeners</li></ul></li><li><strong>Sector coverage initiation primer on the cannabis market in the US and Canada for a US-based asset manager</strong></li><li><strong>Indian Brand Equity Foundation (IBEF)</strong><ul><li>Tracking and updating quarterly macroeconomic indicators for India and all states and UTs</li><li>Monthly domestic sector updates on e-Commerce, automotive, pharmaceuticals, agriculture, and insurance</li></ul></li></ul> </div>
+      </div>
+    </section>
+
+    <section id="education" class="section">
+        <h2 class="section-title">Education</h2>
+        <p>🎓 Bachelor of Business Administration (BBA) | <strong>Finance</strong></p>
+        <p>🏛️ NMIMS University <a href="https://www.nmims.edu" target="_blank" class="university-link icon-link" aria-label="NMIMS University Website"> <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"> <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/> <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/> </svg> </a> </p>
+        <div class="meta">
+            <div class="meta-location"> <svg xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" viewBox="0 0 16 16"><path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg> <span>Mumbai</span> </div>
+            <div class="meta-grid">
+                <div class="meta-date"> <svg xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" viewBox="0 0 16 16"><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/></svg> <span>2014 – 2017</span> </div>
+                <div class="meta-role"> <span><strong>GPA</strong> 3.16/4</span> </div>
+           </div>
+        </div>
+       </section>
+
+    <section id="skills" class="section"> <h2 class="section-title">Skillset</h2> <ul> <li>Primary &amp; secondary market research</li> <li>Report writing</li> <li>Storyboarding, pitch decks, &amp; presentations</li> <li>Data analysis &amp; visualization</li> <li>Email &amp; cold call campaigns</li> <li>Tools &amp; Platforms: PowerPoint, Excel, Capital IQ, Tracxn, Pitchbook, Zapier, Apollo, Lusha</li> </ul> </section>
+
+    <section id="interests" class="section"> <h2 class="section-title">Interests</h2> <ul> <li>Public policy</li> <li>Psychology</li> <li>Writing</li> <li>Technology</li> </ul> </section>
+
+    <section id="contact" class="section"> <h2 class="section-title">Contact</h2> <ul class="contact-list"> <li> <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" fill="currentColor" viewBox="0 0 16 16"><path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg> Gurugram, Haryana </li> <li> <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" fill="currentColor" viewBox="0 0 16 16"><path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555zM0 4.697v7.104l5.803-3.558L0 4.697zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757zm3.436-.586L16 11.801V4.697l-5.803 3.546z"/></svg> <a href="mailto:tarunsukhija@outlook.com">tarunsukhija@outlook.com</a> </li> <li> <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg> <a href="https://www.linkedin.com/in/tarunsukhija/" target="_blank">linkedin.com/in/tarunsukhija</a> </li> </ul> </section>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const themeToggleButton = document.getElementById('theme-toggle');
+        const rootElement = document.documentElement;
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('.section');
+        const experienceItems = document.querySelectorAll('.experience-item');
+        const focusOverlay = document.getElementById('focus-overlay');
+        const logoLink = document.getElementById('logo-link');
+        const body = document.body;
+        const header = document.querySelector('header');
+
+        // --- Theme Handling ---
+        const applyTheme = (theme) => {
+            rootElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            themeToggleButton.textContent = theme === 'dark' ? '☀️' : '🌙';
+            themeToggleButton.setAttribute('aria-label', theme === 'dark' ? 'Activate light mode' : 'Activate dark mode');
+        };
+        const savedTheme = localStorage.getItem('theme');
+        const initialTheme = savedTheme || 'dark';
+        applyTheme(initialTheme);
+        themeToggleButton.addEventListener('click', () => {
+            const newTheme = rootElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            applyTheme(newTheme);
+        });
+
+        // --- Focus Mode ---
+        let currentFocus = null;
+        const setFocus = (targetElement, isItemFocus = false) => {
+            if (!targetElement) return;
+            const parentSection = isItemFocus ? targetElement.closest('.section') : targetElement;
+
+            // --- Scroll Reset Logic ---
+            // Reset scroll position of the section when focusing the section itself
+            if (!isItemFocus && parentSection.scrollTop > 0) {
+                 parentSection.scrollTop = 0;
+            }
+            // --- End Scroll Reset Logic ---
+
+            removeFocus(false);
+            body.classList.add('has-focus');
+            parentSection.classList.add('focused');
+            if (isItemFocus) {
+                targetElement.classList.add('item-focused');
+            }
+            currentFocus = targetElement;
+
+            setTimeout(() => { // Scroll into view
+                 const headerHeight = header.offsetHeight;
+                 const elementToScroll = isItemFocus ? targetElement : parentSection;
+                 const containerToScroll = isItemFocus ? parentSection : window;
+                 const elementRect = elementToScroll.getBoundingClientRect();
+                 const containerRect = isItemFocus ? parentSection.getBoundingClientRect() : { top: 0 };
+                 const relativeElementTop = elementRect.top - containerRect.top;
+                 let scrollTargetPosition;
+
+                 if (isItemFocus) {
+                    // Scroll item within section
+                    scrollTargetPosition = parentSection.scrollTop + relativeElementTop - 20;
+                    containerToScroll.scrollTo({ top: scrollTargetPosition, behavior: 'smooth' });
+                 } else {
+                    // Scroll window to section top
+                    const elementTopPage = elementRect.top + window.pageYOffset;
+                    scrollTargetPosition = elementTopPage - headerHeight - 20; // Adjust offset as needed
+                    containerToScroll.scrollTo({ top: scrollTargetPosition, behavior: 'smooth' });
+                 }
+             }, 50);
+        };
+        const removeFocus = (shouldScrollToTop = true) => {
+            if (!currentFocus) return;
+            body.classList.remove('has-focus');
+            sections.forEach(sec => sec.classList.remove('focused'));
+            experienceItems.forEach(item => item.classList.remove('item-focused'));
+            currentFocus = null;
+            updateActiveNav();
+        };
+
+        // Event Listeners
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    // NOTE: Scroll reset now happens inside setFocus when isItemFocus is false
+                    if (body.classList.contains('has-focus') && (currentFocus === targetSection || targetSection.contains(currentFocus))) {
+                        removeFocus();
+                    } else {
+                        setFocus(targetSection, false); // Explicitly pass false
+                        navLinks.forEach(l => l.classList.remove('active'));
+                        link.classList.add('active');
+                    }
+                }
+            });
+        });
+         experienceItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                 if (e.target.closest('a')) return;
+                 e.stopPropagation();
+                 const parentSection = item.closest('.section');
+                 if (currentFocus === item) { item.classList.remove('item-focused'); currentFocus = parentSection; updateActiveNav(currentFocus.id); }
+                 else {
+                     if (!parentSection.classList.contains('focused')) { setFocus(parentSection, false); setTimeout(() => { setFocus(item, true); updateActiveNav(parentSection.id); }, 60); } // Focus section, then item
+                     else { setFocus(item, true); updateActiveNav(parentSection.id); } // Section already focused, just focus item
+                 }
+            });
+        });
+        focusOverlay.addEventListener('click', () => { removeFocus(); });
+        document.addEventListener('keydown', (e) => { if (e.key === "Escape" && body.classList.contains('has-focus')) { removeFocus(); }});
+        logoLink.addEventListener('click', (e) => { e.preventDefault(); removeFocus(false); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+        // Scroll Reveal & Active Nav Highlighting
+        const updateActiveNav = (forceActiveId = null) => {
+             if (!forceActiveId && body.classList.contains('has-focus') && currentFocus) { forceActiveId = currentFocus.closest('.section')?.id; }
+            let currentActiveId = forceActiveId;
+            const headerHeightOffset = header.offsetHeight + 30;
+            if (!currentActiveId) {
+                let bestMatch = { id: null, position: -Infinity };
+                 sections.forEach(section => { const rect = section.getBoundingClientRect(); if (rect.top < headerHeightOffset && rect.bottom > headerHeightOffset) { const visibleHeight = Math.max(0, Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, headerHeightOffset)); if (visibleHeight > 100) { if (bestMatch.id === null || rect.top > bestMatch.position) { bestMatch = { id: section.id, position: rect.top }; } } } });
+                 currentActiveId = bestMatch.id;
+                  if (!currentActiveId) { if (window.pageYOffset < 100 && sections.length > 0) { currentActiveId = sections[0].id; } else { const lastSection = sections[sections.length - 1]; if (lastSection && lastSection.getBoundingClientRect().bottom < window.innerHeight - 100) { currentActiveId = lastSection.id; } } } }
+            navLinks.forEach(link => { link.classList.toggle('active', link.getAttribute('href') === `#${currentActiveId}`); });
+        };
+        if ("IntersectionObserver" in window) {
+            const revealObserver = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); }}); }, { threshold: 0.05 });
+             sections.forEach(section => { revealObserver.observe(section); });
+             sections.forEach(section => { const rect = section.getBoundingClientRect(); if (rect.top < window.innerHeight && rect.bottom >= 0) { section.classList.add('visible'); } });
+            let scrollTimeout; window.addEventListener('scroll', () => { clearTimeout(scrollTimeout); scrollTimeout = setTimeout(() => { if (!body.classList.contains('has-focus')) { updateActiveNav(); } }, 50); }, { passive: true }); updateActiveNav();
+        } else { sections.forEach(section => { section.style.opacity = '1'; section.classList.add('visible'); }); updateActiveNav(); }
+
+    });
+  </script>
+
+</body>
+</html>
